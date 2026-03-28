@@ -3,7 +3,6 @@
     "description": "Secondary region Azure Functions backend (North Central US)",
     "url": "{{backend-url-functions-secondary}}",
     "protocol": "http",
-    "resourceId": "https://management.azure.com/subscriptions/{{subscription-id}}/resourceGroups/rg-radshow-{{env}}-ncus/providers/Microsoft.Web/sites/func-radshow-{{env}}-ncus",
     "credentials": {
       "header": {}
     },

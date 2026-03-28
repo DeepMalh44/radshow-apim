@@ -3,7 +3,6 @@
     "description": "Primary region Azure Functions backend (South Central US)",
     "url": "{{backend-url-functions-primary}}",
     "protocol": "http",
-    "resourceId": "https://management.azure.com/subscriptions/{{subscription-id}}/resourceGroups/rg-radshow-{{env}}-scus/providers/Microsoft.Web/sites/func-radshow-{{env}}-scus",
     "credentials": {
       "header": {}
     },

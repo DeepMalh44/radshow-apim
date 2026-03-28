@@ -67,12 +67,15 @@ components:
       properties:
         region:
           type: string
-        timestamp:
+        activeRegion:
+          type: string
+          description: Currently active region for DR
+        checkedAt:
           type: string
           format: date-time
         components:
-          type: array
-          items:
+          type: object
+          additionalProperties:
             $ref: "#/components/schemas/ComponentHealth"
 
     ComponentHealth:

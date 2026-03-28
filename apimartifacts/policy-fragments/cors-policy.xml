@@ -1,6 +1,7 @@
 <!--
     CORS policy fragment — included at the global or API level.
     Allows the radshow-spa SPA and Front Door origins.
+    Note: localhost origin should only be added for DEV via environment-specific policy override.
 -->
 <fragment>
     <cors allow-credentials="true">
@@ -8,7 +9,6 @@
             <origin>https://radshow.azurefd.net</origin>
             <origin>https://radshow-dev.azurefd.net</origin>
             <origin>https://radshow-stg.azurefd.net</origin>
-            <origin>http://localhost:5173</origin>
         </allowed-origins>
         <allowed-methods preflight-result-max-age="300">
             <method>GET</method>

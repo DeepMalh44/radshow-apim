@@ -10,7 +10,7 @@ servers:
   - url: https://apim-radshow-{env}.azure-api.net/products
 
 paths:
-  /products:
+  /:
     get:
       operationId: ListProducts
       summary: List all products
@@ -54,13 +54,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /products/{id}:
+  /{id}:
     parameters:
       - name: id
         in: path
         required: true
         schema:
-          type: integer
+          type: string
+          format: uuid
     get:
       operationId: GetProduct
       summary: Get a product by ID
@@ -109,7 +110,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         name:
           type: string
         description:
