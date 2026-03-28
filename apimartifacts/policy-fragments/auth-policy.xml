@@ -1,0 +1,16 @@
+<!--
+    Authentication policy fragment — validates JWT from Azure AD.
+    Include in APIs that require AAD-based authentication.
+-->
+<fragment>
+    <validate-jwt header-name="Authorization" failed-validation-httpcode="401"
+        failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+        <openid-config url="https://login.microsoftonline.com/{{tenant-id}}/.well-known/openid-configuration" />
+        <audiences>
+            <audience>{{api-audience}}</audience>
+        </audiences>
+        <issuers>
+            <issuer>https://sts.windows.net/{{tenant-id}}/</issuer>
+        </issuers>
+    </validate-jwt>
+</fragment>

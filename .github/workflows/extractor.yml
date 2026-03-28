@@ -1,0 +1,55 @@
+name: Extract APIM Configuration
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Source environment to extract from'
+        required: true
+        type: choice
+        options:
+          - dev
+          - stg
+          - prd
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  apiops_release_version: v6.0.0
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run APIOps Extractor
+        uses: azure/apiops@${{ env.apiops_release_version }}
+        with:
+          mode: extract
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_RESOURCE_GROUP_NAME: rg-radshow-${{ github.event.inputs.environment }}01-scus
+          API_MANAGEMENT_SERVICE_NAME: apim-radshow-${{ github.event.inputs.environment }}01
+          API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          title: "APIM Extract: ${{ github.event.inputs.environment }} - ${{ github.run_id }}"
+          commit-message: "chore: extract APIM config from ${{ github.event.inputs.environment }}"
+          branch: extract/${{ github.event.inputs.environment }}-${{ github.run_number }}
+          body: |
+            Automated extraction of APIM configuration from **${{ github.event.inputs.environment }}** environment.
+
+            **Source**: `apim-radshow-${{ github.event.inputs.environment }}01`
+            **Run**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Review the changes and merge to update the APIOps artifacts.

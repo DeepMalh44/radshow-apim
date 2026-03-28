@@ -1,0 +1,81 @@
+name: Publish APIM Configuration
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apimartifacts/**'
+      - 'configuration.*.yaml'
+
+permissions:
+  contents: read
+
+env:
+  apiops_release_version: v6.0.0
+
+jobs:
+  publish-dev:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Publish to DEV APIM
+        uses: azure/apiops@${{ env.apiops_release_version }}
+        with:
+          mode: publish
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_RESOURCE_GROUP_NAME: rg-radshow-dev01-scus
+          API_MANAGEMENT_SERVICE_NAME: apim-radshow-dev01
+          API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
+          CONFIGURATION_YAML_PATH: configuration.dev.yaml
+
+  publish-stg:
+    needs: publish-dev
+    runs-on: ubuntu-latest
+    environment: stg
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Publish to STG APIM
+        uses: azure/apiops@${{ env.apiops_release_version }}
+        with:
+          mode: publish
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_RESOURCE_GROUP_NAME: rg-radshow-stg01-scus
+          API_MANAGEMENT_SERVICE_NAME: apim-radshow-stg01
+          API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
+          CONFIGURATION_YAML_PATH: configuration.stg.yaml
+
+  publish-prd:
+    needs: publish-stg
+    runs-on: ubuntu-latest
+    environment: prd
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Publish to PRD APIM
+        uses: azure/apiops@${{ env.apiops_release_version }}
+        with:
+          mode: publish
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_RESOURCE_GROUP_NAME: rg-radshow-prd01-scus
+          API_MANAGEMENT_SERVICE_NAME: apim-radshow-prd01
+          API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
+          CONFIGURATION_YAML_PATH: configuration.prd.yaml

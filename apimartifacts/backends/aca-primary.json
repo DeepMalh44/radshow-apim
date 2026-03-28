@@ -1,0 +1,15 @@
+{
+  "properties": {
+    "description": "Primary region Azure Container Apps backend (South Central US)",
+    "url": "{{backend-url-aca-primary}}",
+    "protocol": "http",
+    "credentials": {
+      "header": {}
+    },
+    "tls": {
+      "validateCertificateChain": true,
+      "validateCertificateName": true
+    }
+  },
+  "name": "aca-primary"
+}

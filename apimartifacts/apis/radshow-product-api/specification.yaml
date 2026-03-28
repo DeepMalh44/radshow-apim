@@ -1,0 +1,169 @@
+openapi: "3.0.1"
+info:
+  title: RAD Show Product API
+  description: Product Inventory CRUD operations with multi-region awareness.
+  version: "1.0.0"
+  contact:
+    name: RAD Showcase Team
+
+servers:
+  - url: https://apim-radshow-{env}.azure-api.net/products
+
+paths:
+  /products:
+    get:
+      operationId: ListProducts
+      summary: List all products
+      description: Returns all products from the active SQL MI region.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      operationId: CreateProduct
+      summary: Create a new product
+      description: Creates a product and stamps the origin region.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductInput"
+      responses:
+        "201":
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /products/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      operationId: GetProduct
+      summary: Get a product by ID
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Product not found
+    put:
+      operationId: UpdateProduct
+      summary: Update a product
+      description: Updates a product and stamps the last-updated region.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductInput"
+      responses:
+        "200":
+          description: Product updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Product not found
+        "400":
+          description: Bad request
+    delete:
+      operationId: DeleteProduct
+      summary: Delete a product
+      responses:
+        "204":
+          description: Product deleted
+        "404":
+          description: Product not found
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: decimal
+        quantityInStock:
+          type: integer
+        originRegion:
+          type: string
+          description: Region where the product was first created
+        lastUpdatedRegion:
+          type: string
+          description: Region where the product was last modified
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ProductInput:
+      type: object
+      required:
+        - name
+        - price
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: decimal
+        quantityInStock:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+
+security:
+  - apiKeyHeader: []
+  - apiKeyQuery: []

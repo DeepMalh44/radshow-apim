@@ -1,0 +1,28 @@
+<policies>
+    <inbound>
+        <base />
+        <set-backend-service base-url="{{backend-url-functions-primary}}" />
+        <set-header name="X-Forwarded-Host" exists-action="override">
+            <value>@(context.Request.OriginalUrl.Host)</value>
+        </set-header>
+        <set-header name="X-APIM-Region" exists-action="override">
+            <value>@(context.Deployment.Region)</value>
+        </set-header>
+        <rate-limit-by-key calls="100" renewal-period="60"
+            counter-key="@(context.Subscription?.Key ?? context.Request.IpAddress)" />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+        <set-header name="X-Powered-By" exists-action="delete" />
+        <set-header name="X-AspNet-Version" exists-action="delete" />
+    </outbound>
+    <on-error>
+        <base />
+        <set-header name="X-Error-Source" exists-action="override">
+            <value>APIM-Product-API</value>
+        </set-header>
+    </on-error>
+</policies>

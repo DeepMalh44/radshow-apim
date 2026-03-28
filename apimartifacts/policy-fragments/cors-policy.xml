@@ -1,0 +1,29 @@
+<!--
+    CORS policy fragment — included at the global or API level.
+    Allows the radshow-spa SPA and Front Door origins.
+-->
+<fragment>
+    <cors allow-credentials="true">
+        <allowed-origins>
+            <origin>https://radshow.azurefd.net</origin>
+            <origin>https://radshow-dev.azurefd.net</origin>
+            <origin>https://radshow-stg.azurefd.net</origin>
+            <origin>http://localhost:5173</origin>
+        </allowed-origins>
+        <allowed-methods preflight-result-max-age="300">
+            <method>GET</method>
+            <method>POST</method>
+            <method>PUT</method>
+            <method>DELETE</method>
+            <method>OPTIONS</method>
+        </allowed-methods>
+        <allowed-headers>
+            <header>Content-Type</header>
+            <header>Authorization</header>
+            <header>Ocp-Apim-Subscription-Key</header>
+        </allowed-headers>
+        <expose-headers>
+            <header>X-APIM-Region</header>
+        </expose-headers>
+    </cors>
+</fragment>

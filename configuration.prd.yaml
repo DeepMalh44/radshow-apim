@@ -1,0 +1,21 @@
+apimServiceName: apim-radshow-prd01
+namedValues:
+  - name: backend-url-functions-primary
+    value: https://func-radshow-prd01-scus.azurewebsites.net/api
+  - name: backend-url-functions-secondary
+    value: https://func-radshow-prd01-ncus.azurewebsites.net/api
+  - name: backend-url-aca-primary
+    value: https://aca-radshow-prd01-scus.azurecontainerapps.io
+  - name: backend-url-aca-secondary
+    value: https://aca-radshow-prd01-ncus.azurecontainerapps.io
+  - name: key-vault-uri
+    value: https://kv-radshow-prd01-scus.vault.azure.net
+linkedBackends:
+  functions-primary:
+    url: https://func-radshow-prd01-scus.azurewebsites.net/api
+  functions-secondary:
+    url: https://func-radshow-prd01-ncus.azurewebsites.net/api
+  aca-primary:
+    url: https://aca-radshow-prd01-scus.azurecontainerapps.io
+  aca-secondary:
+    url: https://aca-radshow-prd01-ncus.azurecontainerapps.io

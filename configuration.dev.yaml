@@ -1,0 +1,13 @@
+apimServiceName: apim-radshow-dev01
+namedValues:
+  - name: backend-url-functions-primary
+    value: https://func-radshow-dev01-scus.azurewebsites.net/api
+  - name: backend-url-aca-primary
+    value: https://aca-radshow-dev01-scus.azurecontainerapps.io
+  - name: key-vault-uri
+    value: https://kv-radshow-dev01-scus.vault.azure.net
+linkedBackends:
+  functions-primary:
+    url: https://func-radshow-dev01-scus.azurewebsites.net/api
+  aca-primary:
+    url: https://aca-radshow-dev01-scus.azurecontainerapps.io

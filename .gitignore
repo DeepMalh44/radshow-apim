@@ -1,0 +1,13 @@
+# Build outputs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment overrides (keep configuration.*.yaml in repo)
+*.local.yaml

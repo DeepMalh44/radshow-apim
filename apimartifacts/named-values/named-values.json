@@ -1,0 +1,58 @@
+[
+  {
+    "properties": {
+      "displayName": "backend-url-functions-primary",
+      "value": "https://func-radshow-{env}-scus.azurewebsites.net/api",
+      "secret": false,
+      "tags": ["backend", "functions", "primary"]
+    },
+    "name": "backend-url-functions-primary"
+  },
+  {
+    "properties": {
+      "displayName": "backend-url-functions-secondary",
+      "value": "https://func-radshow-{env}-ncus.azurewebsites.net/api",
+      "secret": false,
+      "tags": ["backend", "functions", "secondary"]
+    },
+    "name": "backend-url-functions-secondary"
+  },
+  {
+    "properties": {
+      "displayName": "backend-url-aca-primary",
+      "value": "https://aca-radshow-{env}-scus.azurecontainerapps.io",
+      "secret": false,
+      "tags": ["backend", "aca", "primary"]
+    },
+    "name": "backend-url-aca-primary"
+  },
+  {
+    "properties": {
+      "displayName": "backend-url-aca-secondary",
+      "value": "https://aca-radshow-{env}-ncus.azurecontainerapps.io",
+      "secret": false,
+      "tags": ["backend", "aca", "secondary"]
+    },
+    "name": "backend-url-aca-secondary"
+  },
+  {
+    "properties": {
+      "displayName": "tenant-id",
+      "keyVault": {
+        "secretIdentifier": "https://kv-radshow-{env}-scus.vault.azure.net/secrets/tenant-id"
+      },
+      "secret": true,
+      "tags": ["auth", "keyvault"]
+    },
+    "name": "tenant-id"
+  },
+  {
+    "properties": {
+      "displayName": "api-audience",
+      "value": "api://radshow-{env}",
+      "secret": false,
+      "tags": ["auth"]
+    },
+    "name": "api-audience"
+  }
+]

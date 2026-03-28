@@ -1,0 +1,127 @@
+openapi: "3.0.1"
+info:
+  title: RAD Show Status API
+  description: Regional health status, healthz probe, and DR failover operations.
+  version: "1.0.0"
+  contact:
+    name: RAD Showcase Team
+
+servers:
+  - url: https://apim-radshow-{env}.azure-api.net/ops
+
+paths:
+  /status:
+    get:
+      operationId: GetRegionalStatus
+      summary: Get regional component status
+      description: Returns health and latency for SQL MI, Redis, and other components in the current region.
+      responses:
+        "200":
+          description: Regional status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegionalStatus"
+
+  /healthz:
+    get:
+      operationId: HealthCheck
+      summary: Lightweight health probe
+      description: Used by Front Door and load balancers. Returns 200 if the function host is alive.
+      responses:
+        "200":
+          description: Healthy
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Healthy"
+
+  /failover:
+    post:
+      operationId: TriggerFailover
+      summary: Trigger DR failover or failback
+      description: Initiates a region failover or failback. Requires the failover password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FailoverRequest"
+      responses:
+        "200":
+          description: Failover executed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailoverResponse"
+        "401":
+          description: Invalid failover password
+        "400":
+          description: Bad request or invalid action
+
+components:
+  schemas:
+    RegionalStatus:
+      type: object
+      properties:
+        region:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        components:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentHealth"
+
+    ComponentHealth:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          enum: [Healthy, Degraded, Unhealthy]
+        latencyMs:
+          type: number
+        details:
+          type: string
+
+    FailoverRequest:
+      type: object
+      required:
+        - password
+        - action
+      properties:
+        password:
+          type: string
+        action:
+          type: string
+          enum: [failover, failback]
+
+    FailoverResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        newPrimary:
+          type: string
+        rtoSeconds:
+          type: number
+
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+
+security:
+  - apiKeyHeader: []
+  - apiKeyQuery: []
