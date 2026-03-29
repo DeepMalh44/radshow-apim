@@ -3,10 +3,10 @@
         <base />
         <choose>
             <when condition="@(context.Deployment.Region == &quot;North Central US&quot;)">
-                <set-backend-service base-url="{{backend-url-functions-secondary}}" />
+                <set-backend-service base-url="{{backend-url-functions-secondary}}/products" />
             </when>
             <otherwise>
-                <set-backend-service base-url="{{backend-url-functions-primary}}" />
+                <set-backend-service base-url="{{backend-url-functions-primary}}/products" />
             </otherwise>
         </choose>
         <set-header name="X-Forwarded-Host" exists-action="override">
