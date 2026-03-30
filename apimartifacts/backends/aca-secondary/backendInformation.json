@@ -1,0 +1,15 @@
+{
+  "name": "aca-secondary",
+  "properties": {
+    "description": "Secondary region App Service backend (Germany West Central)",
+    "url": "https://app-radshow-dev01.azurewebsites.net",
+    "credentials": {
+      "header": {}
+    },
+    "tls": {
+      "validateCertificateChain": true,
+      "validateCertificateName": true
+    },
+    "protocol": "http"
+  }
+}

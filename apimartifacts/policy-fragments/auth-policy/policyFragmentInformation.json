@@ -1,0 +1,7 @@
+{
+  "name": "auth-policy",
+  "properties": {
+    "description": "JWT validation policy fragment for Azure AD authentication",
+    "format": "rawxml"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "backend-url-functions-secondary",
+  "properties": {
+    "displayName": "backend-url-functions-secondary",
+    "secret": false,
+    "value": "https://func-radshow-dev01.azurewebsites.net/api",
+    "tags": [
+      "backend",
+      "functions",
+      "secondary"
+    ]
+  }
+}

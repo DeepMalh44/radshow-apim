@@ -1,0 +1,15 @@
+{
+  "name": "functions-primary",
+  "properties": {
+    "description": "Primary region Azure Functions backend (Sweden Central)",
+    "url": "https://func-radshow-dev01.azurewebsites.net/api",
+    "credentials": {
+      "header": {}
+    },
+    "tls": {
+      "validateCertificateChain": true,
+      "validateCertificateName": true
+    },
+    "protocol": "http"
+  }
+}

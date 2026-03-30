@@ -1,0 +1,11 @@
+{
+  "name": "tenant-id",
+  "properties": {
+    "displayName": "tenant-id",
+    "secret": false,
+    "value": "6021aa37-5a44-450a-8854-f08245985be2",
+    "tags": [
+      "auth"
+    ]
+  }
+}

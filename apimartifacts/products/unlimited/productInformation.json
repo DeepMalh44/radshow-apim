@@ -1,15 +1,11 @@
 {
+  "name": "unlimited",
   "properties": {
+    "state": "published",
     "displayName": "Unlimited",
     "description": "Subscribers have completely unlimited access to the RAD Showcase APIs.",
     "subscriptionRequired": true,
     "approvalRequired": false,
-    "subscriptionsLimit": 1,
-    "state": "published"
-  },
-  "name": "unlimited",
-  "apis": [
-    "radshow-product-api",
-    "radshow-status-api"
-  ]
+    "subscriptionsLimit": 1
+  }
 }

@@ -2,7 +2,7 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(context.Deployment.Region == &quot;North Central US&quot;)">
+            <when condition="@(context.Deployment.Region == &quot;Germany West Central&quot;)">
                 <set-backend-service base-url="{{backend-url-functions-secondary}}/products" />
             </when>
             <otherwise>

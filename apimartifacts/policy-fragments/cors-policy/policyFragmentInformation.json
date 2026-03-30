@@ -1,0 +1,7 @@
+{
+  "name": "cors-policy",
+  "properties": {
+    "description": "CORS policy fragment for SPA and Front Door origins",
+    "format": "rawxml"
+  }
+}

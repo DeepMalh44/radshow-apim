@@ -1,0 +1,13 @@
+{
+  "name": "backend-url-aca-primary",
+  "properties": {
+    "displayName": "backend-url-aca-primary",
+    "secret": false,
+    "value": "https://app-radshow-dev01.azurewebsites.net",
+    "tags": [
+      "backend",
+      "aca",
+      "primary"
+    ]
+  }
+}

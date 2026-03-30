@@ -1,0 +1,11 @@
+{
+  "name": "api-audience",
+  "properties": {
+    "displayName": "api-audience",
+    "secret": false,
+    "value": "api://radshow-dev01",
+    "tags": [
+      "auth"
+    ]
+  }
+}
