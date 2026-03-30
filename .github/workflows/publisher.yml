@@ -41,7 +41,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Publish to DEV APIM
-        uses: azure/apiops@v6.0.0
+        uses: azure/apiops@v6.0.2
         with:
           mode: publish
         env:
@@ -73,7 +73,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Publish to STG APIM
-        uses: azure/apiops@v6.0.0
+        uses: azure/apiops@v6.0.2
         with:
           mode: publish
         env:
@@ -105,7 +105,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Publish to PRD APIM
-        uses: azure/apiops@v6.0.0
+        uses: azure/apiops@v6.0.2
         with:
           mode: publish
         env:
@@ -116,6 +116,7 @@ jobs:
           API_MANAGEMENT_SERVICE_NAME: ${{ secrets.API_MANAGEMENT_SERVICE_NAME }}
           API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
           CONFIGURATION_YAML_PATH: configuration.prd.yaml
+
 
 
 

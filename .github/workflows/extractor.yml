@@ -33,7 +33,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Run APIOps Extractor
-        uses: azure/apiops@v6.0.0
+        uses: azure/apiops@v6.0.2
         with:
           mode: extract
         env:
@@ -57,6 +57,7 @@ jobs:
             **Run**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             Review the changes and merge to update the APIOps artifacts.
+
 
 
 
