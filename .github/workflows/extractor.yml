@@ -17,6 +17,9 @@ permissions:
   pull-requests: write
   id-token: write
 
+env:
+  apiops_release_version: v6.0.2
+
 jobs:
   extract:
     runs-on: ubuntu-latest
@@ -32,17 +35,29 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Run APIOps Extractor
-        uses: azure/apiops@v6.0.2
-        with:
-          mode: extract
+      - name: Get Bearer Token
+        id: token
+        run: |
+          TOKEN=$(az account get-access-token --resource https://management.azure.com/ --query accessToken -o tsv)
+          echo "::add-mask::$TOKEN"
+          echo "bearer_token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Run Extractor
         env:
-          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_BEARER_TOKEN: ${{ steps.token.outputs.bearer_token }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           AZURE_RESOURCE_GROUP_NAME: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
           API_MANAGEMENT_SERVICE_NAME: ${{ secrets.API_MANAGEMENT_SERVICE_NAME }}
-          API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
+          API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: ${{ github.workspace }}/apimartifacts
+        run: |
+          set -euo pipefail
+          echo "Downloading extractor..."
+          RELEASE_URL="https://github.com/Azure/apiops/releases/download/${{ env.apiops_release_version }}/extractor-linux-x64.zip"
+          curl -sL "$RELEASE_URL" -o /tmp/extractor.zip
+          unzip -oq /tmp/extractor.zip -d /tmp/extractor
+          chmod +x /tmp/extractor/extractor
+          echo "Running extractor..."
+          /tmp/extractor/extractor
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v6
@@ -57,7 +72,3 @@ jobs:
             **Run**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             Review the changes and merge to update the APIOps artifacts.
-
-
-
-

@@ -22,6 +22,9 @@ permissions:
   contents: read
   id-token: write
 
+env:
+  apiops_release_version: v6.0.2
+
 jobs:
   publish-dev:
     runs-on: ubuntu-latest
@@ -32,6 +35,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Azure Login (OIDC)
         uses: azure/login@v2
@@ -40,18 +45,30 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Publish to DEV APIM
-        uses: azure/apiops@v6.0.2
-        with:
-          mode: publish
+      - name: Get Bearer Token
+        id: token
+        run: |
+          TOKEN=$(az account get-access-token --resource https://management.azure.com/ --query accessToken -o tsv)
+          echo "::add-mask::$TOKEN"
+          echo "bearer_token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Run Publisher
         env:
-          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_BEARER_TOKEN: ${{ steps.token.outputs.bearer_token }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           AZURE_RESOURCE_GROUP_NAME: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
           API_MANAGEMENT_SERVICE_NAME: ${{ secrets.API_MANAGEMENT_SERVICE_NAME }}
-          API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
-          CONFIGURATION_YAML_PATH: configuration.dev.yaml
+          API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: ${{ github.workspace }}/apimartifacts
+          CONFIGURATION_YAML_PATH: ${{ github.workspace }}/configuration.dev.yaml
+        run: |
+          set -euo pipefail
+          echo "Downloading publisher..."
+          RELEASE_URL="https://github.com/Azure/apiops/releases/download/${{ env.apiops_release_version }}/publisher-linux-x64.zip"
+          curl -sL "$RELEASE_URL" -o /tmp/publisher.zip
+          unzip -oq /tmp/publisher.zip -d /tmp/publisher
+          chmod +x /tmp/publisher/publisher
+          echo "Running publisher..."
+          /tmp/publisher/publisher
 
   publish-stg:
     needs: publish-dev
@@ -64,6 +81,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Azure Login (OIDC)
         uses: azure/login@v2
@@ -72,18 +91,28 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Publish to STG APIM
-        uses: azure/apiops@v6.0.2
-        with:
-          mode: publish
+      - name: Get Bearer Token
+        id: token
+        run: |
+          TOKEN=$(az account get-access-token --resource https://management.azure.com/ --query accessToken -o tsv)
+          echo "::add-mask::$TOKEN"
+          echo "bearer_token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Run Publisher
         env:
-          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_BEARER_TOKEN: ${{ steps.token.outputs.bearer_token }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           AZURE_RESOURCE_GROUP_NAME: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
           API_MANAGEMENT_SERVICE_NAME: ${{ secrets.API_MANAGEMENT_SERVICE_NAME }}
-          API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
-          CONFIGURATION_YAML_PATH: configuration.stg.yaml
+          API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: ${{ github.workspace }}/apimartifacts
+          CONFIGURATION_YAML_PATH: ${{ github.workspace }}/configuration.stg.yaml
+        run: |
+          set -euo pipefail
+          RELEASE_URL="https://github.com/Azure/apiops/releases/download/${{ env.apiops_release_version }}/publisher-linux-x64.zip"
+          curl -sL "$RELEASE_URL" -o /tmp/publisher.zip
+          unzip -oq /tmp/publisher.zip -d /tmp/publisher
+          chmod +x /tmp/publisher/publisher
+          /tmp/publisher/publisher
 
   publish-prd:
     needs: publish-stg
@@ -96,6 +125,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Azure Login (OIDC)
         uses: azure/login@v2
@@ -104,20 +135,25 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Publish to PRD APIM
-        uses: azure/apiops@v6.0.2
-        with:
-          mode: publish
+      - name: Get Bearer Token
+        id: token
+        run: |
+          TOKEN=$(az account get-access-token --resource https://management.azure.com/ --query accessToken -o tsv)
+          echo "::add-mask::$TOKEN"
+          echo "bearer_token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Run Publisher
         env:
-          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_BEARER_TOKEN: ${{ steps.token.outputs.bearer_token }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           AZURE_RESOURCE_GROUP_NAME: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
           API_MANAGEMENT_SERVICE_NAME: ${{ secrets.API_MANAGEMENT_SERVICE_NAME }}
-          API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
-          CONFIGURATION_YAML_PATH: configuration.prd.yaml
-
-
-
-
-
+          API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: ${{ github.workspace }}/apimartifacts
+          CONFIGURATION_YAML_PATH: ${{ github.workspace }}/configuration.prd.yaml
+        run: |
+          set -euo pipefail
+          RELEASE_URL="https://github.com/Azure/apiops/releases/download/${{ env.apiops_release_version }}/publisher-linux-x64.zip"
+          curl -sL "$RELEASE_URL" -o /tmp/publisher.zip
+          unzip -oq /tmp/publisher.zip -d /tmp/publisher
+          chmod +x /tmp/publisher/publisher
+          /tmp/publisher/publisher
