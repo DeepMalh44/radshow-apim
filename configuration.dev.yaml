@@ -37,3 +37,7 @@ backends:
   - name: aca-secondary
     properties:
       url: https://app-radshow-dev01.azurewebsites.net
+apis:
+  - name: radshow-api
+    properties:
+      serviceUrl: https://func-radshow-dev01.azurewebsites.net/api

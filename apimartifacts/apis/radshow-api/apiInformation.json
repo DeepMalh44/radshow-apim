@@ -1,0 +1,18 @@
+{
+  "properties": {
+    "apiRevision": "1",
+    "authenticationSettings": {},
+    "description": "RAD Showcase Unified API - Products, Status, and Failover operations via Azure Functions backend.",
+    "displayName": "RAD Show API",
+    "format": "openapi+json",
+    "isCurrent": true,
+    "path": "api",
+    "protocols": [
+      "https"
+    ],
+    "serviceUrl": "https://func-radshow-dev01.azurewebsites.net/api",
+    "subscriptionRequired": false,
+    "type": "http"
+  },
+  "name": "radshow-api"
+}

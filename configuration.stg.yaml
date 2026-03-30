@@ -19,3 +19,7 @@ linkedBackends:
     url: https://aca-radshow-stg01-scus.azurecontainerapps.io
   aca-secondary:
     url: https://aca-radshow-stg01-ncus.azurecontainerapps.io
+apis:
+  - name: radshow-api
+    properties:
+      serviceUrl: https://func-radshow-stg01-scus.azurewebsites.net/api
