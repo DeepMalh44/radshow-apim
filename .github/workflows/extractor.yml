@@ -8,9 +8,9 @@ on:
         required: true
         type: choice
         options:
-          - dev
-          - stg
-          - prd
+          - DEV01
+          - STG01
+          - PRD01
 
 permissions:
   contents: write
@@ -60,3 +60,4 @@ jobs:
             **Run**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             Review the changes and merge to update the APIOps artifacts.
+

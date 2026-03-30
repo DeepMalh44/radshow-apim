@@ -14,9 +14,9 @@ on:
         required: true
         type: choice
         options:
-          - dev
-          - stg
-          - prd
+          - DEV01
+          - STG01
+          - PRD01
 
 permissions:
   contents: read
@@ -30,8 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'push' ||
-      (github.event_name == 'workflow_dispatch' && inputs.environment == 'dev')
-    environment: dev
+      (github.event_name == 'workflow_dispatch' && inputs.environment == 'DEV01')
+    environment: DEV01
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -62,9 +62,9 @@ jobs:
     if: |
       always() &&
       (needs.publish-dev.result == 'success' || needs.publish-dev.result == 'skipped') &&
-      (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.environment == 'stg'))
+      (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.environment == 'STG01'))
     runs-on: ubuntu-latest
-    environment: stg
+    environment: STG01
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -94,9 +94,9 @@ jobs:
     if: |
       always() &&
       (needs.publish-stg.result == 'success' || needs.publish-stg.result == 'skipped') &&
-      (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.environment == 'prd'))
+      (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.environment == 'PRD01'))
     runs-on: ubuntu-latest
-    environment: prd
+    environment: PRD01
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -120,3 +120,4 @@ jobs:
           API_MANAGEMENT_SERVICE_NAME: ${{ secrets.API_MANAGEMENT_SERVICE_NAME }}
           API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
           CONFIGURATION_YAML_PATH: configuration.prd.yaml
+
