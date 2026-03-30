@@ -15,6 +15,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
 
 env:
   apiops_release_version: v6.0.0
@@ -27,17 +28,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
       - name: Run APIOps Extractor
         uses: azure/apiops@${{ env.apiops_release_version }}
         with:
           mode: extract
         env:
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          AZURE_RESOURCE_GROUP_NAME: rg-radshow-${{ github.event.inputs.environment }}01-scus
-          API_MANAGEMENT_SERVICE_NAME: apim-radshow-${{ github.event.inputs.environment }}01
+          AZURE_RESOURCE_GROUP_NAME: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+          API_MANAGEMENT_SERVICE_NAME: ${{ secrets.API_MANAGEMENT_SERVICE_NAME }}
           API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
 
       - name: Create pull request
@@ -49,7 +56,7 @@ jobs:
           body: |
             Automated extraction of APIM configuration from **${{ github.event.inputs.environment }}** environment.
 
-            **Source**: `apim-radshow-${{ github.event.inputs.environment }}01`
+            **Source**: `${{ secrets.API_MANAGEMENT_SERVICE_NAME }}`
             **Run**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             Review the changes and merge to update the APIOps artifacts.

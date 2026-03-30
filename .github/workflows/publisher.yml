@@ -7,9 +7,20 @@ on:
     paths:
       - 'apimartifacts/**'
       - 'configuration.*.yaml'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+          - dev
+          - stg
+          - prd
 
 permissions:
   contents: read
+  id-token: write
 
 env:
   apiops_release_version: v6.0.0
@@ -17,10 +28,20 @@ env:
 jobs:
   publish-dev:
     runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && inputs.environment == 'dev')
     environment: dev
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Publish to DEV APIM
         uses: azure/apiops@${{ env.apiops_release_version }}
@@ -28,21 +49,32 @@ jobs:
           mode: publish
         env:
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          AZURE_RESOURCE_GROUP_NAME: rg-radshow-dev01-scus
-          API_MANAGEMENT_SERVICE_NAME: apim-radshow-dev01
+          AZURE_RESOURCE_GROUP_NAME: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+          API_MANAGEMENT_SERVICE_NAME: ${{ secrets.API_MANAGEMENT_SERVICE_NAME }}
           API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
           CONFIGURATION_YAML_PATH: configuration.dev.yaml
+          AZURE_BEARER_TOKEN: ${{ steps.azure-login.outputs.token || '' }}
 
   publish-stg:
     needs: publish-dev
+    if: |
+      always() &&
+      (needs.publish-dev.result == 'success' || needs.publish-dev.result == 'skipped') &&
+      (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.environment == 'stg'))
     runs-on: ubuntu-latest
     environment: stg
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Publish to STG APIM
         uses: azure/apiops@${{ env.apiops_release_version }}
@@ -50,21 +82,31 @@ jobs:
           mode: publish
         env:
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          AZURE_RESOURCE_GROUP_NAME: rg-radshow-stg01-scus
-          API_MANAGEMENT_SERVICE_NAME: apim-radshow-stg01
+          AZURE_RESOURCE_GROUP_NAME: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+          API_MANAGEMENT_SERVICE_NAME: ${{ secrets.API_MANAGEMENT_SERVICE_NAME }}
           API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
           CONFIGURATION_YAML_PATH: configuration.stg.yaml
 
   publish-prd:
     needs: publish-stg
+    if: |
+      always() &&
+      (needs.publish-stg.result == 'success' || needs.publish-stg.result == 'skipped') &&
+      (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.environment == 'prd'))
     runs-on: ubuntu-latest
     environment: prd
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Publish to PRD APIM
         uses: azure/apiops@${{ env.apiops_release_version }}
@@ -72,10 +114,9 @@ jobs:
           mode: publish
         env:
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          AZURE_RESOURCE_GROUP_NAME: rg-radshow-prd01-scus
-          API_MANAGEMENT_SERVICE_NAME: apim-radshow-prd01
+          AZURE_RESOURCE_GROUP_NAME: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+          API_MANAGEMENT_SERVICE_NAME: ${{ secrets.API_MANAGEMENT_SERVICE_NAME }}
           API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts
           CONFIGURATION_YAML_PATH: configuration.prd.yaml
