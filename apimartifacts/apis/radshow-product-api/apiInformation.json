@@ -10,7 +10,7 @@
     "protocols": [
       "https"
     ],
-    "serviceUrl": "{{backend-url-functions-primary}}",
+    "serviceUrl": "https://func-radshow-dev01.azurewebsites.net/api",
     "subscriptionRequired": true,
     "subscriptionKeyParameterNames": {
       "header": "Ocp-Apim-Subscription-Key",
