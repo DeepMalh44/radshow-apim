@@ -1,0 +1,12 @@
+{
+  "name": "secondary-region",
+  "properties": {
+    "displayName": "secondary-region",
+    "secret": false,
+    "value": "Germany West Central",
+    "tags": [
+      "routing",
+      "dr"
+    ]
+  }
+}

@@ -24,6 +24,10 @@ namedValues:
     properties:
       displayName: api-audience
       value: api://radshow-dev01
+  - name: secondary-region
+    properties:
+      displayName: secondary-region
+      value: Germany West Central
 backends:
   - name: functions-primary
     properties:

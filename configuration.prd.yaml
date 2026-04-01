@@ -1,24 +1,46 @@
 apimServiceName: apim-radshow-prd01
 namedValues:
   - name: backend-url-functions-primary
-    value: https://func-radshow-prd01-scus.azurewebsites.net/api
+    properties:
+      displayName: backend-url-functions-primary
+      value: https://func-radshow-prd01-scus.azurewebsites.net/api
   - name: backend-url-functions-secondary
-    value: https://func-radshow-prd01-ncus.azurewebsites.net/api
+    properties:
+      displayName: backend-url-functions-secondary
+      value: https://func-radshow-prd01-ncus.azurewebsites.net/api
   - name: backend-url-aca-primary
-    value: https://aca-radshow-prd01-scus.azurecontainerapps.io
+    properties:
+      displayName: backend-url-aca-primary
+      value: https://app-radshow-prd01-scus.azurewebsites.net
   - name: backend-url-aca-secondary
-    value: https://aca-radshow-prd01-ncus.azurecontainerapps.io
-  - name: key-vault-uri
-    value: https://kv-radshow-prd01-scus.vault.azure.net
-linkedBackends:
-  functions-primary:
-    url: https://func-radshow-prd01-scus.azurewebsites.net/api
-  functions-secondary:
-    url: https://func-radshow-prd01-ncus.azurewebsites.net/api
-  aca-primary:
-    url: https://aca-radshow-prd01-scus.azurecontainerapps.io
-  aca-secondary:
-    url: https://aca-radshow-prd01-ncus.azurecontainerapps.io
+    properties:
+      displayName: backend-url-aca-secondary
+      value: https://app-radshow-prd01-ncus.azurewebsites.net
+  - name: tenant-id
+    properties:
+      displayName: tenant-id
+      value: 6021aa37-5a44-450a-8854-f08245985be2
+  - name: api-audience
+    properties:
+      displayName: api-audience
+      value: api://radshow-prd01
+  - name: secondary-region
+    properties:
+      displayName: secondary-region
+      value: North Central US
+backends:
+  - name: functions-primary
+    properties:
+      url: https://func-radshow-prd01-scus.azurewebsites.net/api
+  - name: functions-secondary
+    properties:
+      url: https://func-radshow-prd01-ncus.azurewebsites.net/api
+  - name: aca-primary
+    properties:
+      url: https://app-radshow-prd01-scus.azurewebsites.net
+  - name: aca-secondary
+    properties:
+      url: https://app-radshow-prd01-ncus.azurewebsites.net
 apis:
   - name: radshow-api
     properties:

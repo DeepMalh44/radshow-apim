@@ -1,24 +1,46 @@
 apimServiceName: apim-radshow-stg01-cin
 namedValues:
   - name: backend-url-functions-primary
-    value: https://func-radshow-stg01-cin.azurewebsites.net/api
+    properties:
+      displayName: backend-url-functions-primary
+      value: https://func-radshow-stg01-cin.azurewebsites.net/api
   - name: backend-url-functions-secondary
-    value: https://func-radshow-stg01-sin.azurewebsites.net/api
+    properties:
+      displayName: backend-url-functions-secondary
+      value: https://func-radshow-stg01-sin.azurewebsites.net/api
   - name: backend-url-aca-primary
-    value: https://aca-radshow-stg01-cin.azurecontainerapps.io
+    properties:
+      displayName: backend-url-aca-primary
+      value: https://app-radshow-stg01-cin.azurewebsites.net
   - name: backend-url-aca-secondary
-    value: https://aca-radshow-stg01-sin.azurecontainerapps.io
-  - name: key-vault-uri
-    value: https://kv-radshow-stg01-cin.vault.azure.net
-linkedBackends:
-  functions-primary:
-    url: https://func-radshow-stg01-cin.azurewebsites.net/api
-  functions-secondary:
-    url: https://func-radshow-stg01-sin.azurewebsites.net/api
-  aca-primary:
-    url: https://aca-radshow-stg01-cin.azurecontainerapps.io
-  aca-secondary:
-    url: https://aca-radshow-stg01-sin.azurecontainerapps.io
+    properties:
+      displayName: backend-url-aca-secondary
+      value: https://app-radshow-stg01-sin.azurewebsites.net
+  - name: tenant-id
+    properties:
+      displayName: tenant-id
+      value: 6021aa37-5a44-450a-8854-f08245985be2
+  - name: api-audience
+    properties:
+      displayName: api-audience
+      value: api://radshow-stg01
+  - name: secondary-region
+    properties:
+      displayName: secondary-region
+      value: South India
+backends:
+  - name: functions-primary
+    properties:
+      url: https://func-radshow-stg01-cin.azurewebsites.net/api
+  - name: functions-secondary
+    properties:
+      url: https://func-radshow-stg01-sin.azurewebsites.net/api
+  - name: aca-primary
+    properties:
+      url: https://app-radshow-stg01-cin.azurewebsites.net
+  - name: aca-secondary
+    properties:
+      url: https://app-radshow-stg01-sin.azurewebsites.net
 apis:
   - name: radshow-api
     properties:

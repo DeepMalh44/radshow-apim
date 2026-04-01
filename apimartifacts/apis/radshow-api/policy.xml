@@ -1,8 +1,9 @@
 <policies>
     <inbound>
         <base />
+        <set-variable name="secondaryRegion" value="{{secondary-region}}" />
         <choose>
-            <when condition="@(context.Deployment.Region == &quot;Germany West Central&quot;)">
+            <when condition="@(context.Deployment.Region == (string)context.Variables["secondaryRegion"])">
                 <set-backend-service base-url="{{backend-url-functions-secondary}}" />
             </when>
             <otherwise>
