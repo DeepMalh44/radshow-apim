@@ -1,25 +1,25 @@
-apimServiceName: apim-radshow-stg01
+apimServiceName: apim-radshow-stg01-cin
 namedValues:
   - name: backend-url-functions-primary
-    value: https://func-radshow-stg01-scus.azurewebsites.net/api
+    value: https://func-radshow-stg01-cin.azurewebsites.net/api
   - name: backend-url-functions-secondary
-    value: https://func-radshow-stg01-ncus.azurewebsites.net/api
+    value: https://func-radshow-stg01-sin.azurewebsites.net/api
   - name: backend-url-aca-primary
-    value: https://aca-radshow-stg01-scus.azurecontainerapps.io
+    value: https://aca-radshow-stg01-cin.azurecontainerapps.io
   - name: backend-url-aca-secondary
-    value: https://aca-radshow-stg01-ncus.azurecontainerapps.io
+    value: https://aca-radshow-stg01-sin.azurecontainerapps.io
   - name: key-vault-uri
-    value: https://kv-radshow-stg01-scus.vault.azure.net
+    value: https://kv-radshow-stg01-cin.vault.azure.net
 linkedBackends:
   functions-primary:
-    url: https://func-radshow-stg01-scus.azurewebsites.net/api
+    url: https://func-radshow-stg01-cin.azurewebsites.net/api
   functions-secondary:
-    url: https://func-radshow-stg01-ncus.azurewebsites.net/api
+    url: https://func-radshow-stg01-sin.azurewebsites.net/api
   aca-primary:
-    url: https://aca-radshow-stg01-scus.azurecontainerapps.io
+    url: https://aca-radshow-stg01-cin.azurecontainerapps.io
   aca-secondary:
-    url: https://aca-radshow-stg01-ncus.azurecontainerapps.io
+    url: https://aca-radshow-stg01-sin.azurecontainerapps.io
 apis:
   - name: radshow-api
     properties:
-      serviceUrl: https://func-radshow-stg01-scus.azurewebsites.net/api
+      serviceUrl: https://func-radshow-stg01-cin.azurewebsites.net/api

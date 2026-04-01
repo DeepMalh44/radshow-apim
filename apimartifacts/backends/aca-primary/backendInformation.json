@@ -1,7 +1,7 @@
 {
   "name": "aca-primary",
   "properties": {
-    "description": "Primary region App Service backend (Sweden Central)",
+    "description": "Primary region App Service backend (Central India)",
     "url": "https://app-radshow-dev01.azurewebsites.net",
     "credentials": {
       "header": {}

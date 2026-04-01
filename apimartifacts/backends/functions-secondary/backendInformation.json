@@ -1,7 +1,7 @@
 {
   "name": "functions-secondary",
   "properties": {
-    "description": "Secondary region Azure Functions backend (Germany West Central)",
+    "description": "Secondary region Azure Functions backend (South India)",
     "url": "https://func-radshow-dev01.azurewebsites.net/api",
     "credentials": {
       "header": {}
