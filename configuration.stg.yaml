@@ -11,11 +11,11 @@ namedValues:
   - name: backend-url-aca-primary
     properties:
       displayName: backend-url-aca-primary
-      value: https://app-radshow-stg01-cin.azurewebsites.net
+      value: https://ca-products-radshow-stg01-cin.happysea-a428f96b.centralindia.azurecontainerapps.io
   - name: backend-url-aca-secondary
     properties:
       displayName: backend-url-aca-secondary
-      value: https://app-radshow-stg01-sin.azurewebsites.net
+      value: https://ca-products-radshow-stg01-sin.mangosea-b9cd4f1e.southindia.azurecontainerapps.io
   - name: tenant-id
     properties:
       displayName: tenant-id
@@ -37,11 +37,14 @@ backends:
       url: https://func-radshow-stg01-sin.azurewebsites.net/api
   - name: aca-primary
     properties:
-      url: https://app-radshow-stg01-cin.azurewebsites.net
+      url: https://ca-products-radshow-stg01-cin.happysea-a428f96b.centralindia.azurecontainerapps.io
   - name: aca-secondary
     properties:
-      url: https://app-radshow-stg01-sin.azurewebsites.net
+      url: https://ca-products-radshow-stg01-sin.mangosea-b9cd4f1e.southindia.azurecontainerapps.io
 apis:
   - name: radshow-api
     properties:
       serviceUrl: https://func-radshow-stg01-cin.azurewebsites.net/api
+  - name: radshow-product-api
+    properties:
+      serviceUrl: https://ca-products-radshow-stg01-cin.happysea-a428f96b.centralindia.azurecontainerapps.io/products

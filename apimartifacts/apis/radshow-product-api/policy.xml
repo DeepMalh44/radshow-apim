@@ -2,11 +2,11 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(context.Deployment.Region == &quot;Germany West Central&quot;)">
-                <set-backend-service base-url="{{backend-url-functions-secondary}}/products" />
+            <when condition="@(context.Deployment.Region == &quot;{{secondary-region}}&quot;)">
+                <set-backend-service base-url="{{backend-url-aca-secondary}}/products" />
             </when>
             <otherwise>
-                <set-backend-service base-url="{{backend-url-functions-primary}}/products" />
+                <set-backend-service base-url="{{backend-url-aca-primary}}/products" />
             </otherwise>
         </choose>
         <set-header name="X-Forwarded-Host" exists-action="override">
