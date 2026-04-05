@@ -11,11 +11,7 @@
       "https"
     ],
     "serviceUrl": "https://func-radshow-dev01.azurewebsites.net/api",
-    "subscriptionRequired": true,
-    "subscriptionKeyParameterNames": {
-      "header": "Ocp-Apim-Subscription-Key",
-      "query": "subscription-key"
-    },
+    "subscriptionRequired": false,
     "type": "http"
   },
   "name": "radshow-product-api"
